@@ -11,6 +11,14 @@ public class Player : MonoBehaviour
     public int m_shotCount;
     public float m_shotInterval;
 
+    public int m_hpMax;
+    public int m_hp;
+
+    private void Awake()
+    {
+	    m_hp = m_hpMax;
+    }
+
     private void Update()
     {
         var h = Input.GetAxis( "Horizontal" );
@@ -56,4 +64,12 @@ public class Player : MonoBehaviour
 		    shot.Init( angleBase, speed );
 	    }
     }
+
+    public void Damage( int damage )
+    {
+	    m_hp -= damage;
+	    if ( 0 < m_hp ) return;
+	    gameObject.SetActive( false );
+    }
+
 }
