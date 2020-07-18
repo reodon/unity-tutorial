@@ -405,6 +405,7 @@ MonoBehaviour:
   m_shotInterval: 0.3
   m_hpMax: 10
   m_hp: 0
+  m_magnetDistance: 2
 --- !u!61 &452492372
 BoxCollider2D:
   m_ObjectHideFlags: 0
