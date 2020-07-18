@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     public int m_hpMax;
     public int m_hp;
 
+    public float m_magnetDistance;
+
     private void Awake()
     {
 	    m_instance = this;
