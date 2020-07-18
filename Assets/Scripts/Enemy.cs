@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public enum RESPAWN_TYPE
@@ -18,6 +19,14 @@ public class Enemy : MonoBehaviour
 	public int m_exp;
 	public int m_damage;
 
+	public bool m_isFollow;
+
+	public Explosion m_explosionPrefab;
+	
+	public Gem[] m_gemPrefabs;
+	public float m_gemSpeedMin;
+	public float m_gemSpeedMax;
+
 	private int m_hp;
 	private Vector3 m_direction;
 
@@ -28,6 +37,19 @@ public class Enemy : MonoBehaviour
 
 	private void Update()
 	{
+		if ( m_isFollow )
+		{
+			var angle = Utils.GetAngle( transform.localPosition, Player.m_instance.transform.localPosition );
+			var direction = Utils.GetDirection( angle );
+
+			transform.localPosition += direction * m_speed;
+
+			var angles = transform.localEulerAngles;
+			angles.z = angle - 90;
+			transform.localEulerAngles = angles;
+			return;
+		}
+			
 		transform.localPosition += m_direction * m_speed;
 	}
 
@@ -76,12 +98,25 @@ public class Enemy : MonoBehaviour
 
 		if ( collision.name.Contains( "Shot" ) )
 		{
+			Instantiate( m_explosionPrefab, collision.transform.localPosition, Quaternion.identity );
+
 			Destroy( collision.gameObject );
 			m_hp--;
 
 			if ( 0 < m_hp ) return;
 
 			Destroy( gameObject );
+
+			var exp = m_exp;
+
+			while( 0 < exp )
+			{
+				var gemPrefabs = m_gemPrefabs.Where( c => c.m_exp <= exp ).ToArray();
+				var gemPrefab = gemPrefabs[ Random.Range( 0, gemPrefabs.Length ) ];
+				var gem = Instantiate( gemPrefab, transform.localPosition, Quaternion.identity );
+				gem.Init( m_exp, m_gemSpeedMin, m_gemSpeedMax );
+				exp -= gem.m_exp;
+			}
 		}
 	}
 }

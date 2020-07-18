@@ -2,6 +2,8 @@
 
 public class Player : MonoBehaviour
 {
+    public static Player m_instance;
+    
     public float m_speed;
 
     public Shot m_shotPrefab;
@@ -16,6 +18,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+	    m_instance = this;
 	    m_hp = m_hpMax;
     }
 
