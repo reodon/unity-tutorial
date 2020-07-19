@@ -7,6 +7,8 @@ public class Gem : MonoBehaviour
 	
 	public float m_followAccel = 0.01f;
 	
+	public AudioClip m_goldClip;
+
 	private bool m_isFollow;
 	private float m_followSpeed;
 
@@ -55,6 +57,12 @@ public class Gem : MonoBehaviour
 		if ( ! collision.name.Contains( "Player" ) ) return;
 
 		Destroy( gameObject );
+
+		var player = collision.GetComponent<Player>();
+		player.AddExp( m_exp );
+
+		var audioSource = FindObjectOfType<AudioSource>();
+		audioSource.PlayOneShot( m_goldClip );
 	}
 }
 

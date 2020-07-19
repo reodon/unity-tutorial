@@ -4839,6 +4839,7 @@ MonoBehaviour:
   m_gemPrefabs: []
   m_gemSpeedMin: 0
   m_gemSpeedMax: 0
+  m_deathClip: {fileID: 0}
 --- !u!114 &-4052391956429457786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4853,6 +4854,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_exp: 1
   m_brake: 0.9
+  m_followAccel: 0.01
+  m_goldClip: {fileID: 8300000, guid: 11044182c261bbd4f96bcec22e99e376, type: 3}
 --- !u!61 &3984303536430065130
 BoxCollider2D:
   m_ObjectHideFlags: 0

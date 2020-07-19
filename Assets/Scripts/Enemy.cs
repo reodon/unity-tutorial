@@ -27,6 +27,8 @@ public class Enemy : MonoBehaviour
 	public float m_gemSpeedMin;
 	public float m_gemSpeedMax;
 
+	public AudioClip m_deathClip;
+
 	private int m_hp;
 	private Vector3 m_direction;
 
@@ -104,6 +106,9 @@ public class Enemy : MonoBehaviour
 			m_hp--;
 
 			if ( 0 < m_hp ) return;
+
+			var audioSource = FindObjectOfType<AudioSource>();
+			audioSource.PlayOneShot( m_deathClip );
 
 			Destroy( gameObject );
 
