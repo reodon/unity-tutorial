@@ -18,10 +18,23 @@ public class Player : MonoBehaviour
 
     public float m_magnetDistance;
 
+    public int m_nextExpBase;
+    public int m_nextExpInterval;
+    public int m_level;
+    public int m_exp;
+    public int m_prevNeedExp;
+    public int m_needExp;
+
+    public AudioClip m_levelUpClip;
+    public AudioClip m_damageClip;
+
     private void Awake()
     {
 	    m_instance = this;
 	    m_hp = m_hpMax;
+
+	    m_level = 1;
+	    m_needExp = GetNeedExp( 1 );
     }
 
     private void Update()
@@ -72,9 +85,38 @@ public class Player : MonoBehaviour
 
     public void Damage( int damage )
     {
+	    var audioSource = FindObjectOfType<AudioSource>();
+	    audioSource.PlayOneShot( m_damageClip );
+
 	    m_hp -= damage;
 	    if ( 0 < m_hp ) return;
 	    gameObject.SetActive( false );
+    }
+
+    public void AddExp( int exp )
+    {
+	    m_exp += exp;
+
+	    if ( m_exp < m_needExp ) return;
+
+	    m_level++;
+	    m_prevNeedExp = m_needExp;
+	    m_needExp = GetNeedExp( m_level );
+
+	    var angleBase = 0;
+	    var angleRange = 360;
+	    var count = 28;
+	    ShootNWay( angleBase, angleRange, 0.15f, count );
+	    ShootNWay( angleBase, angleRange, 0.2f, count );
+	    ShootNWay( angleBase, angleRange, 0.25f, count );
+
+	    var audioSource = FindObjectOfType<AudioSource>();
+	    audioSource.PlayOneShot( m_levelUpClip );
+    }
+
+    public int GetNeedExp( int level )
+    {
+	    return m_nextExpBase + m_nextExpInterval * ( ( level - 1 ) * ( level - 1 ) );
     }
 
 }
