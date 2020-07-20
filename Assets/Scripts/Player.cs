@@ -25,6 +25,14 @@ public class Player : MonoBehaviour
     public int m_prevNeedExp;
     public int m_needExp;
 
+    public int m_levelMax;
+    public int m_shotCountFrom;
+    public int m_shotCountTo;
+    public float m_shotIntervalFrom;
+    public float m_shotIntervalTo;
+    public float m_magnetDistanceFrom;
+    public float m_magnetDistanceTo;
+
     public AudioClip m_levelUpClip;
     public AudioClip m_damageClip;
 
@@ -35,6 +43,10 @@ public class Player : MonoBehaviour
 
 	    m_level = 1;
 	    m_needExp = GetNeedExp( 1 );
+
+	    m_shotCount = m_shotCountFrom;
+	    m_shotInterval = m_shotIntervalFrom;
+	    m_magnetDistance = m_magnetDistanceFrom;
     }
 
     private void Update()
@@ -112,6 +124,14 @@ public class Player : MonoBehaviour
 
 	    var audioSource = FindObjectOfType<AudioSource>();
 	    audioSource.PlayOneShot( m_levelUpClip );
+
+	    var t = (float) ( m_level - 1 ) / ( m_levelMax - 1 );
+	    m_shotCount = Mathf.RoundToInt( Mathf.Lerp( m_shotCountFrom, m_shotCountTo, t ) );
+	    //m_shotInterval =  Mathf.Lerp( m_shotIntervalFrom, m_shotIntervalTo, t );
+	    m_shotInterval = Mathf.RoundToInt( Mathf.Lerp( m_shotIntervalFrom, m_shotIntervalTo, t ) );
+	    //m_magnetDistance = Mathf.Lerp( m_magnetDistanceFrom, m_magnetDistanceTo, t );
+	    m_magnetDistance = Mathf.RoundToInt( Mathf.Lerp( m_magnetDistanceFrom, m_magnetDistanceTo, t ) );
+
     }
 
     public int GetNeedExp( int level )
